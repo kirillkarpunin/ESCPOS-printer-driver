@@ -42,11 +42,6 @@ Image::Image(const std::string& path, int target_width, int target_height, doubl
         }
     }
 
-    if (final_height == 384) {
-        final_height = 383;
-        need_resize = true;
-    }
-
     unsigned char* final_img;
     if (need_resize) {
         final_img = static_cast<unsigned char*>(malloc(final_width * final_height * 3));
