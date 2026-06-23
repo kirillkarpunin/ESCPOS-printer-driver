@@ -150,7 +150,7 @@ void Printer::_rotate_180(bool v) {
 
 void Printer::print_image(Image& image) const {
     write("\x1D\x76\x30"s);
-    print(image.data_str());
+    print(image._data_str());
 }
 
 void Printer::set_absolute_print_position(uint16_t v) {

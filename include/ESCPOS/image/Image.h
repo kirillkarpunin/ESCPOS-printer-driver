@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+class Printer;
+
 namespace ImageUtils
 {
 
@@ -14,6 +16,8 @@ constexpr double DEFAULT_GAMMA = 1.0;
 }
 
 class Image final {
+    friend Printer;
+
 public:
     explicit Image(const std::string& path, int target_width = 0, int target_height = 0, double gamma = ImageUtils::DEFAULT_GAMMA);
 
@@ -34,9 +38,9 @@ public:
     Scale get_width_scale() const;
     Scale get_height_scale() const;
 
-    std::string data_str() const;
-
 private:
+    std::string _data_str() const;
+
     Scale _width_scale{Scale::x1};
     Scale _height_scale{Scale::x1};
 

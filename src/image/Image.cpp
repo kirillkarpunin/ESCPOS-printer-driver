@@ -95,7 +95,7 @@ Image::Image(const std::string& path, int target_width, int target_height, doubl
     _bitmap[4] = (height_16 >> 8) & 0xFF;        // yH
 }
 
-std::string Image::data_str() const {
+std::string Image::_data_str() const {
     std::string str;
     str.append(
         reinterpret_cast<const char*>(_bitmap.data()),
