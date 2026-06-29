@@ -6,11 +6,11 @@
 void ESCPOSParameterizedTest::SetUp() {
     ConnectionType type = GetParam();
 
-    if (type == ConnectionType::USB) {
-        const char* path = std::getenv("PRINTER_USB_PATH");
+    if (type == ConnectionType::WIRED) {
+        const char* path = std::getenv("PRINTER_DEVICE_PATH");
 
         if (!path) {
-            GTEST_SKIP() << "PRINTER_USB_PATH not set";
+            GTEST_SKIP() << "PRINTER_DEVICE_PATH not set";
         }
 
         connection = std::make_unique<ComPortConnection>(path);
@@ -46,5 +46,10 @@ void ESCPOSParameterizedTest::TearDown() {
 
     if (!current_test_name.empty()) {
         current_test_name.clear();
+    }
+
+    ConnectionType type = GetParam();
+    if (type == ConnectionType::BLUETOOTH) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
 }

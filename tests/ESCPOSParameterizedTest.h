@@ -7,12 +7,12 @@
 #include "ESCPOS/printer/Printer.h"
 
 enum class ConnectionType {
-    USB,
+    WIRED,
     BLUETOOTH
 };
 
 const auto connections = ::testing::Values(
-    ConnectionType::USB,
+    ConnectionType::WIRED,
     ConnectionType::BLUETOOTH
 );
 
