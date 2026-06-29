@@ -1,6 +1,6 @@
 # C++20 ESC/POS Lib
 
-Библиотека для работы с чековыми термопринтерами по протоколу ESC/POS.
+Библиотека для работы с чековыми термопринтерами по протоколу ESC/POS, написанная на C++20.
 
 ## Особенности
 
@@ -54,8 +54,29 @@ int main() {
 ```
 
 ## Сборка
+Сборка осуществляется с помощью CMake.
+```bash
+# Клонирование репо
+git clone git@github.com:kirillkarpunin/ESCPOS-printer-driver.git
+cd ESCPOS-printer-driver
+
+# Сборка
+mkdir build && cd build
+cmake ..
+cmake --build .
+
+# Сборка с тестами
+mkdir build && cd build
+cmake .. -DBUILD_TESTING=ON
+cmake --build .
+```
 
 ### Зависимости
+- GCC 13+ / Clang 15+ (C++20 и \<format\>)
+- CMake 3.31+
+- libbluetooth
+- nothings/stb (подтягивается автоматически с помощью CPM)
+- GoogleTest (подтягивается автоматически с помощью CPM; только при сборке с тестами)
 
 ## Описание классов
 
