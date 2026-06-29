@@ -13,6 +13,45 @@
 - [ ] Печать QR-кодов
 
 ## Использование
+```cpp
+#include "ESCPOS/connection/ComPortConnection.h"
+#include "ESCPOS/printer/Printer.h"
+
+int main() {
+    ComPortConnection c{"/dev/usb/lp0"}; // Создание проводного подключения
+    Printer pr{c};
+
+    pr.initialize(); // Инициализация принтера
+    pr.print("Hello, world!");
+}
+```
+```cpp
+#include "ESCPOS/connection/BluetoothConnection.h"
+#include "ESCPOS/printer/Printer.h"
+
+int main() {
+    BluetoothConnection c{"00:1A:2B:3C:4D:5E"}; // Создание bluetooth-подключения
+    Printer pr{c};
+
+    pr.initialize(); // Инициализация принтера
+    pr.print("Hello, world!");
+}
+```
+```cpp
+#include "ESCPOS/connection/ComPortConnection.h"
+#include "ESCPOS/printer/Printer.h"
+#include "ESCPOS/image/Image.h"
+
+int main() {
+    ComPortConnection c{"/dev/usb/lp0"};
+    Printer pr{c};
+    pr.initialize();
+
+    // Изображение "test_image.png" будет трансформировано в изображение размером 100x100
+    Image im{"test_image.png", 100, 100} // Может быть png, jpg или bmp
+    pr.print_image(im); // Печать изображения
+}
+```
 
 ## Сборка
 
@@ -45,6 +84,9 @@
 - `void print(const unsigned char& ch) const` - Добавляют строку или одиночный символ в буфер печати принтера и отправляет команду переноса строки для немедленной печати.
 <br>
 
+- `void print_image(Image& image) const` - Печатает переданное изображение. **_В некачественных ESC/POS принтерах встречается баг, при котором печать изображения, высота которого кратна 96, вызывает загрязнение буфера печати принтера._**
+<br>
+
 - `void set_text_feature(Text::TextFeature feature, bool v)` - Включает (`true`) или выключает (`false`) стиль текста (полужирный, курсив, инверсия, подчеркивание).
 - `void reset_text_features()` - Выключает все включенные стили текста.
 - `bool get_text_feature(Text::TextFeature feature) const` - Возвращает текущее состояние конкретного стиля текста.
@@ -59,6 +101,8 @@
 - `void reset_text_scale()` - Сбрасывает множители размера символов текста по ширине и высоте к стандартному (`x1`).
 - `Text::Scale get_text_width_scale() const`
 - `Text::Scale get_text_height_scale() const` - Возвращают текущие множители размера символов текста по ширине и высоте соответственно.
+<br>
+
 - `void set_rotation(Text::Angle v)` - Устанавливает поворот печатаемого текста на `0`, `90`, `180` или `270` градусов.
 - `void reset_rotation()` - Сбрасывает установленное значение поворота печатаемого текста к стандартному (`0` градусов).
 <br>
@@ -89,8 +133,10 @@
 #### `Image`
 Класс, представляющий изображение для печати на принтере. Содержит логику загрузки файла изображения, изменения размера изображения и преобразования изображения в монохромный 1-битный формат с помощью алгоритма дизеринга. Для дизеринга используется матрица Байера размером 4x4.
 
+Поддерживаются `png`, `jpg` и `bmp` изображения.
+
 Конструктор класса ожидает:
-- `const std::string& path` - Строка - путь к файлу принтера в системе.
+- `const std::string& path` - Строка - путь к файлу изображения в системе.
 - `int target_width = 0` - Целевая ширина изображения. При значении `0` (значение по умолчанию) целевой шириной считается исходная ширина изображения.
 - `int target_height = 0` - Целевая высота изображения. При значении `0` (значение по умолчанию) целевой высотой считается исходная высота изображения.
 - `double gamma = 1.0` - Параметр яркости изображения. При значениях `>1.0` изображение становится светлее; при значениях `<1.0` - темнее.
